@@ -44,6 +44,18 @@ public class Produto {
         this.status = status;
     }
 
+    public Produto(String nome, BigDecimal preco, Status status) {
+        this.nome = nome;
+        this.preco = preco;
+        this.status = status;
+    }
+
+    public void atualizar(Produto produto) {
+        this.nome = produto.getNome();
+        this.preco = produto.getPreco();
+        this.status = produto.getStatus();
+    }
+
     public Long getId() {
         return id;
     }
