@@ -13,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,11 +56,23 @@ public class ProdutoController {
     @Transactional
     public Produto atualizar(@RequestBody @Valid AtualizaProduoRequest request) {
         logger.info("buscando produto por id: {}", request.id());
-        var produto = produtoRepository.findById(request.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        var produto = buscarPorId(request.id());
         produto.atualizar(request.toModel());
         return produto;
     }
+
+    @DeleteMapping("{id}")
+    @Transactional
+    public void deletar(@PathVariable Long id) {
+        logger.info("deletando produto por id: {}", id);
+        var produto = buscarPorId(id);
+        produtoRepository.delete(produto);
+    }
+
+    private Produto buscarPorId(Long id) {
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     
 }
