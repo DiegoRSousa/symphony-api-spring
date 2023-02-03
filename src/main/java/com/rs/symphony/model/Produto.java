@@ -13,6 +13,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "produtos")
@@ -33,6 +34,8 @@ public class Produto {
     @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
+
+    private LocalDateTime criadoEm = LocalDateTime.now();
 
     public Produto() {}
 
@@ -74,5 +77,9 @@ public class Produto {
 
     public Status getStatus() {
         return status;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
     }
 }

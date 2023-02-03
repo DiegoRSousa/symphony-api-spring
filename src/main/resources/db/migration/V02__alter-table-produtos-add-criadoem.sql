@@ -1,0 +1,1 @@
+alter table produtos add criado_em timestamp;
