@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 @RequestMapping("/produtos")
@@ -30,7 +32,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProdutoController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
-
     private final ProdutoRepository produtoRepository;
 
     public ProdutoController(ProdutoRepository produtoRepository) {
@@ -38,12 +39,12 @@ public class ProdutoController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProdutoResponse adicionar(@RequestBody @Valid  NovoProdutoRequest request) {
+    public ResponseEntity<ProdutoResponse> adicionar(@RequestBody @Valid  NovoProdutoRequest request, UriComponentsBuilder uriBuilder) {
         logger.info("adicionando produto: {}", request);
         Produto produto = request.toModel();
         produtoRepository.save(produto);
-        return new ProdutoResponse(produto);
+        var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(produto.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ProdutoResponse(produto));
     }
 
     @GetMapping
@@ -52,21 +53,28 @@ public class ProdutoController {
         return produtoRepository.findAll(pageable).map(ProdutoResponse::new);
     }
 
+    @GetMapping("/{id}")
+    public ProdutoResponse detalhar(@PathVariable Long id) {
+        var produto = buscarPorId(id);
+        return new ProdutoResponse(produto);
+    }
+
     @PutMapping
     @Transactional
-    public Produto atualizar(@RequestBody @Valid AtualizaProduoRequest request) {
+    public ProdutoResponse atualizar(@RequestBody @Valid AtualizaProduoRequest request) {
         logger.info("buscando produto por id: {}", request.id());
         var produto = buscarPorId(request.id());
         produto.atualizar(request.toModel());
-        return produto;
+        return new ProdutoResponse(produto);
     }
 
     @DeleteMapping("{id}")
     @Transactional
-    public void deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         logger.info("deletando produto por id: {}", id);
         var produto = buscarPorId(id);
         produtoRepository.delete(produto);
+        return ResponseEntity.noContent().build();
     }
 
     private Produto buscarPorId(Long id) {
