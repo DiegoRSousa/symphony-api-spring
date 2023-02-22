@@ -30,12 +30,11 @@ public class Produto {
     private String nome;
     @PositiveOrZero
     private BigDecimal preco;
-
     @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
-
     private LocalDateTime criadoEm = LocalDateTime.now();
+    private LocalDateTime atualizadoEm;
 
     public Produto() {}
 
@@ -57,6 +56,7 @@ public class Produto {
         this.nome = produto.getNome();
         this.preco = produto.getPreco();
         this.status = produto.getStatus();
+        this.atualizadoEm = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -81,5 +81,9 @@ public class Produto {
 
     public LocalDateTime getCriadoEm() {
         return criadoEm;
+    }
+
+    public LocalDateTime getAtualizadoEm() {
+        return atualizadoEm;
     }
 }

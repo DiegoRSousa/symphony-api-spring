@@ -1,0 +1,1 @@
+alter table produtos add atualizado_em timestamp;
