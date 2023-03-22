@@ -15,6 +15,7 @@ public class Message {
     public static final String DETALHANDO_PRODUTO = "produto.detalhando";
     public static final String ATUALIZANDO_PRODUTO = "produto.atualizando";
     public static final String DELETANDO_PRODUTO = "produto.deletando";
+    public static final String ADICIONANDO_PEDIDO = "pedido.adicionando";
 
     @Autowired
     private MessageSource messageSource;

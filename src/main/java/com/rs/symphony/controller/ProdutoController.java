@@ -41,7 +41,8 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoResponse> adicionar(@RequestBody @Valid  NovoProdutoRequest request, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ProdutoResponse> adicionar(@RequestBody @Valid  NovoProdutoRequest request,
+                                                     UriComponentsBuilder uriBuilder) {
         logger.info(message.getMessage(Message.ADICIONANDO_PRODUTO, request));
         Produto produto = request.toModel();
         produtoRepository.save(produto);
