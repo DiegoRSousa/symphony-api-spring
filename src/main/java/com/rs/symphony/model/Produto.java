@@ -59,6 +59,10 @@ public class Produto {
         this.atualizadoEm = LocalDateTime.now();
     }
 
+    public boolean isAtivo() {
+        return this.status.equals(Status.ATIVADO);
+    }
+
     public Long getId() {
         return id;
     }

@@ -17,6 +17,14 @@ public class Message {
     public static final String DELETANDO_PRODUTO = "produto.deletando";
     public static final String ADICIONANDO_PEDIDO = "pedido.adicionando";
 
+    public String produtoDesativado(){
+        return getMessage("produto.desativado");
+    }
+
+    public String getProdutoDesativadoCampo(int i) {
+        return getMessage("produto.desativadoCampo", i);
+    }
+
     @Autowired
     private MessageSource messageSource;
 

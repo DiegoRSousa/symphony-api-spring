@@ -10,13 +10,13 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -26,21 +26,23 @@ public class PedidoController {
     private final Message message;
     private final ProdutoRepository produtoRepository;
     private final PedidoRepository pedidoRepository;
-    private final List<ProdutoAtivoValidator> validatorList;
 
-    public PedidoController(Message message, ProdutoRepository produtoRepository, PedidoRepository pedidoRepository,
-                            List<ProdutoAtivoValidator> validatorList) {
+    @InitBinder
+    public void init(WebDataBinder binder) {
+        binder.addValidators(new ProdutoAtivoValidator(produtoRepository, message));
+    }
+
+    public PedidoController(Message message, ProdutoRepository produtoRepository, PedidoRepository pedidoRepository) {
         this.message = message;
         this.produtoRepository = produtoRepository;
         this.pedidoRepository = pedidoRepository;
-        this.validatorList = validatorList;
+
     }
 
     @PostMapping
     public ResponseEntity<PedidoResponse> adicionar(@RequestBody @Valid PedidoRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         logger.info(message.getMessage(Message.ADICIONANDO_PEDIDO, request));
-        validatorList.forEach(v -> v.validate(request));
         var pedido = request.toModel(produtoRepository);
         pedidoRepository.save(pedido);
         var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(pedido.getId()).toUri();

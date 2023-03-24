@@ -13,7 +13,7 @@ import java.util.List;
 
 public record PedidoRequest(
         @NotNull @Valid List<ItemPedidoRequest> itensPedido,
-        @PositiveOrZero BigDecimal total,
+        @NotNull @PositiveOrZero BigDecimal total,
         @NotNull @JsonFormat(pattern = "dd/MM/yyyy HH:mm") LocalDateTime data) {
     public Pedido toModel(ProdutoRepository produtoRepository) {
         var itensPedido = itensPedido().stream().map(i -> i.toModel(produtoRepository)).toList();
