@@ -42,7 +42,7 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<PedidoResponse> adicionar(@RequestBody @Valid PedidoRequest request,
                                                     UriComponentsBuilder uriBuilder) {
-        logger.info(message.getMessage(Message.ADICIONANDO_PEDIDO, request));
+        logger.info(message.adicionandoPedido(request));
         var pedido = request.toModel(produtoRepository);
         pedidoRepository.save(pedido);
         var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(pedido.getId()).toUri();

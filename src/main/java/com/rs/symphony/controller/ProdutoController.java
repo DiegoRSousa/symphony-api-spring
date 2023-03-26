@@ -43,7 +43,7 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<ProdutoResponse> adicionar(@RequestBody @Valid  NovoProdutoRequest request,
                                                      UriComponentsBuilder uriBuilder) {
-        logger.info(message.getMessage(Message.ADICIONANDO_PRODUTO, request));
+        logger.info(message.adicionandoProduto(request));
         Produto produto = request.toModel();
         produtoRepository.save(produto);
         var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(produto.getId()).toUri();
@@ -52,13 +52,13 @@ public class ProdutoController {
 
     @GetMapping
     public Page<ProdutoResponse> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) {
-        logger.info(message.getMessage(Message.LISTANDO_PRODUTOS));
+        logger.info(message.listandoProdutos());
         return produtoRepository.findAll(pageable).map(ProdutoResponse::new);
     }
 
     @GetMapping("/{id}")
     public ProdutoResponse detalhar(@PathVariable Long id) {
-        logger.info(message.getMessage(Message.DETALHANDO_PRODUTO, id));
+        logger.info(message.detalhandoProduto(id));
         var produto = buscarPorId(id);
         return new ProdutoResponse(produto);
     }
@@ -67,7 +67,7 @@ public class ProdutoController {
     @Transactional
     public ProdutoResponse atualizar(@RequestBody @Valid AtualizaProduoRequest request) {
         var id = request.id();
-        logger.info(message.getMessage(Message.ATUALIZANDO_PRODUTO, id));
+        logger.info(message.atualizandoProduto(id));
         var produto = buscarPorId(id);
         produto.atualizar(request.toModel());
         return new ProdutoResponse(produto);
@@ -76,7 +76,7 @@ public class ProdutoController {
     @DeleteMapping("{id}")
     @Transactional
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        logger.info(message.getMessage(Message.DELETANDO_PRODUTO, id));
+        logger.info(message.deletandoProduto(id));
         var produto = buscarPorId(id);
         produtoRepository.delete(produto);
         return ResponseEntity.noContent().build();
@@ -85,9 +85,9 @@ public class ProdutoController {
     private Produto buscarPorId(Long id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.info(message.getMessage(Message.PRODUTO_NAO_ENCONTRADO, id));
+                    logger.info(message.produtoNaoEncontrado(id));
                     return new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            message.getMessage(Message.PRODUTO_NAO_ENCONTRADO, id));
+                            message.produtoNaoEncontrado(id));
                 });
     }
 

@@ -9,24 +9,44 @@ import java.util.Locale;
 @Component
 public class Message {
 
-    public static final String PRODUTO_NAO_ENCONTRADO = "produto.naoEncontrado";
-    public static final String ADICIONANDO_PRODUTO = "produto.adicionando";
-    public static final String LISTANDO_PRODUTOS = "produto.listando";
-    public static final String DETALHANDO_PRODUTO = "produto.detalhando";
-    public static final String ATUALIZANDO_PRODUTO = "produto.atualizando";
-    public static final String DELETANDO_PRODUTO = "produto.deletando";
-    public static final String ADICIONANDO_PEDIDO = "pedido.adicionando";
+    @Autowired
+    private MessageSource messageSource;
+
+    public String produtoNaoEncontrado(Object obj) {
+        return getMessage("produto.naoEncontrado", obj);
+    }
+
+    public String adicionandoProduto(Object obj) {
+        return getMessage("produto.adicionando", obj);
+    }
+
+    public String listandoProdutos(){
+        return getMessage("produto.listando");
+    }
+
+    public String detalhandoProduto(Object obj) {
+        return getMessage("produto.detalhando", obj);
+    }
+
+    public String atualizandoProduto(Object obj) {
+        return getMessage("produto.atualizando", obj);
+    }
+
+    public String deletandoProduto(Object obj) {
+        return getMessage("produto.deletando", obj);
+    }
+
+    public String adicionandoPedido(Object obj) {
+        return getMessage("pedido.adicionando", obj);
+    }
 
     public String produtoDesativado(){
         return getMessage("produto.desativado");
     }
 
-    public String getProdutoDesativadoCampo(int i) {
+    public String getProdutoDesativadoCampo(Object i) {
         return getMessage("produto.desativadoCampo", i);
     }
-
-    @Autowired
-    private MessageSource messageSource;
 
     public String getMessage(String code, Object arg) {
         var args = new Object[10];
