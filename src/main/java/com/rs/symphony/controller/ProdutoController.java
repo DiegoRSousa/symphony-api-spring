@@ -6,6 +6,7 @@ import com.rs.symphony.request.AtualizaProduoRequest;
 import com.rs.symphony.request.NovoProdutoRequest;
 import com.rs.symphony.response.ProdutoResponse;
 import com.rs.symphony.util.Message;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/produtos")
 @RestController
 public class ProdutoController {

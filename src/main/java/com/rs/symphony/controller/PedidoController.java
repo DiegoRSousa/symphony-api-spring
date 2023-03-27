@@ -6,6 +6,7 @@ import com.rs.symphony.repository.ProdutoRepository;
 import com.rs.symphony.request.PedidoRequest;
 import com.rs.symphony.response.PedidoResponse;
 import com.rs.symphony.util.Message;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
