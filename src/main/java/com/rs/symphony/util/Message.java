@@ -23,6 +23,9 @@ public class Message {
     public String listandoProdutos(){
         return getMessage("produto.listando");
     }
+    public String listandoProdutosAtivos() {
+        return getMessage("produto.listando.ativos");
+    }
 
     public String detalhandoProduto(Object obj) {
         return getMessage("produto.detalhando", obj);
@@ -44,7 +47,7 @@ public class Message {
         return getMessage("produto.desativado");
     }
 
-    public String getProdutoDesativadoCampo(Object i) {
+    public String produtoDesativadoCampo(Object i) {
         return getMessage("produto.desativadoCampo", i);
     }
 
@@ -57,5 +60,6 @@ public class Message {
     public String getMessage(String code) {
         return messageSource.getMessage(code, null, Locale.getDefault());
     }
+
 
 }

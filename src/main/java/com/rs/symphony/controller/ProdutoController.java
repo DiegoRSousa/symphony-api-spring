@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @SecurityRequirement(name = "bearer-key")
 @RequestMapping("/produtos")
 @RestController
@@ -55,6 +57,12 @@ public class ProdutoController {
     public Page<ProdutoResponse> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) {
         logger.info(message.listandoProdutos());
         return produtoRepository.findAll(pageable).map(ProdutoResponse::new);
+    }
+
+    @GetMapping("/ativos")
+    public List<Produto> listarAtivos() {
+        logger.info(message.listandoProdutosAtivos());
+        return produtoRepository.findAllByAtivado();
     }
 
     @GetMapping("/{id}")

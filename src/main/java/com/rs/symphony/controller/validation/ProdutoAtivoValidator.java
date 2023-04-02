@@ -30,7 +30,7 @@ public class ProdutoAtivoValidator implements Validator {
         IntStream.range(0, itens.size()).forEach(i -> {
             var produto = repository.findById(itens.get(i).produtoId());
             if(produto.isPresent() && !produto.get().isAtivo())
-                errors.rejectValue(message.getProdutoDesativadoCampo(i), null,
+                errors.rejectValue(message.produtoDesativadoCampo(i), null,
                         message.produtoDesativado());
         });
     }
