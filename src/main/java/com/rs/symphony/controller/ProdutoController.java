@@ -48,7 +48,7 @@ public class ProdutoController {
                                                      UriComponentsBuilder uriBuilder) {
         logger.info(message.adicionandoProduto(request));
         Produto produto = request.toModel();
-        produtoRepository.save(produto);
+        produto = produtoRepository.save(produto);
         var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(produto.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoResponse(produto));
     }
